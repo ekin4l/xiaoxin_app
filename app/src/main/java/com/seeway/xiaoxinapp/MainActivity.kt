@@ -33,4 +33,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setupWithNavController(navController)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+    }
 }

@@ -6,7 +6,18 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <application
+        android:name=".XiaoXinApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,6 +27,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.XiaoXinNav"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="62a9b475a1d9aae0995a04ab783c94eb" />
+
+        <service
+            android:name="com.amap.api.location.APSService"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

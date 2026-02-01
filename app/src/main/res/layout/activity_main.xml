@@ -11,142 +11,73 @@
         android:id="@+id/sidebar"
         android:layout_width="@dimen/sidebar_width"
         android:layout_height="0dp"
-        android:background="@color/background_sidebar"
-        android:elevation="@dimen/elevation_md"
+        android:background="@color/white"
+        android:paddingTop="@dimen/sidebar_padding_vertical"
+        android:paddingBottom="@dimen/sidebar_padding_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Home Nav Item -->
+        <!-- Top Nav Items Container -->
         <LinearLayout
-            android:id="@+id/nav_home"
-            android:layout_width="0dp"
+            android:id="@+id/nav_top_container"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="@dimen/sidebar_item_padding"
-            android:background="@drawable/bg_sidebar_item_selected"
-            android:clickable="true"
-            android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/nav_music">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/nav_home_icon"
-                android:layout_width="@dimen/sidebar_icon_size"
-                android:layout_height="@dimen/sidebar_icon_size"
-                android:src="@drawable/ic_sidebar_home_selected"
-                android:contentDescription="@string/nav_home" />
+            <!-- Home Nav Item -->
+            <ImageButton
+                android:id="@+id/nav_home"
+                android:layout_width="@dimen/sidebar_item_size"
+                android:layout_height="@dimen/sidebar_item_size"
+                android:layout_marginBottom="@dimen/sidebar_item_gap"
+                android:src="@drawable/ic_nav_home"
+                android:background="@drawable/bg_nav_item_selected"
+                android:contentDescription="@string/nav_home"
+                android:clickable="true"
+                android:focusable="true" />
 
-            <TextView
-                android:id="@+id/nav_home_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nav_home"
-                android:textSize="10sp"
-                android:textColor="@color/blue_600"
-                android:layout_marginTop="4dp" />
+            <!-- Music Nav Item -->
+            <ImageButton
+                android:id="@+id/nav_music"
+                android:layout_width="@dimen/sidebar_item_size"
+                android:layout_height="@dimen/sidebar_item_size"
+                android:layout_marginBottom="@dimen/sidebar_item_gap"
+                android:src="@drawable/ic_nav_music"
+                android:background="@drawable/bg_nav_item_normal"
+                android:contentDescription="@string/nav_music"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <!-- Notifications Nav Item -->
+            <ImageButton
+                android:id="@+id/nav_notifications"
+                android:layout_width="@dimen/sidebar_item_size"
+                android:layout_height="@dimen/sidebar_item_size"
+                android:src="@drawable/ic_nav_bell"
+                android:background="@drawable/bg_nav_item_normal"
+                android:contentDescription="@string/nav_notifications"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
-        <!-- Music Nav Item -->
-        <LinearLayout
-            android:id="@+id/nav_music"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/sidebar_item_padding"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nav_home"
-            app:layout_constraintBottom_toTopOf="@id/nav_notifications">
-
-            <ImageView
-                android:id="@+id/nav_music_icon"
-                android:layout_width="@dimen/sidebar_icon_size"
-                android:layout_height="@dimen/sidebar_icon_size"
-                android:src="@drawable/ic_sidebar_music"
-                android:contentDescription="@string/nav_music" />
-
-            <TextView
-                android:id="@+id/nav_music_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nav_music"
-                android:textSize="10sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp" />
-        </LinearLayout>
-
-        <!-- Notifications Nav Item -->
-        <LinearLayout
-            android:id="@+id/nav_notifications"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/sidebar_item_padding"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nav_music"
-            app:layout_constraintBottom_toTopOf="@id/nav_settings">
-
-            <ImageView
-                android:id="@+id/nav_notifications_icon"
-                android:layout_width="@dimen/sidebar_icon_size"
-                android:layout_height="@dimen/sidebar_icon_size"
-                android:src="@drawable/ic_sidebar_bell"
-                android:contentDescription="@string/nav_notifications" />
-
-            <TextView
-                android:id="@+id/nav_notifications_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nav_notifications"
-                android:textSize="10sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp" />
-        </LinearLayout>
-
-        <!-- Settings Nav Item -->
-        <LinearLayout
+        <!-- Settings Nav Item (at bottom) -->
+        <ImageButton
             android:id="@+id/nav_settings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="@dimen/sidebar_item_padding"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="@dimen/sidebar_item_size"
+            android:layout_height="@dimen/sidebar_item_size"
+            android:src="@drawable/ic_nav_settings"
+            android:background="@drawable/bg_nav_item_normal"
+            android:contentDescription="@string/nav_settings"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nav_notifications">
-
-            <ImageView
-                android:id="@+id/nav_settings_icon"
-                android:layout_width="@dimen/sidebar_icon_size"
-                android:layout_height="@dimen/sidebar_icon_size"
-                android:src="@drawable/ic_sidebar_settings"
-                android:contentDescription="@string/nav_settings" />
-
-            <TextView
-                android:id="@+id/nav_settings_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nav_settings"
-                android:textSize="10sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp" />
-        </LinearLayout>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

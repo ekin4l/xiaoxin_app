@@ -1,11 +1,7 @@
 package com.seeway.xiaoxinapp
 
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -20,29 +16,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    // Nav items
-    private lateinit var navHome: LinearLayout
-    private lateinit var navMusic: LinearLayout
-    private lateinit var navNotifications: LinearLayout
-    private lateinit var navSettings: LinearLayout
-
-    // Nav icons
-    private lateinit var navHomeIcon: ImageView
-    private lateinit var navMusicIcon: ImageView
-    private lateinit var navNotificationsIcon: ImageView
-    private lateinit var navSettingsIcon: ImageView
-
-    // Nav labels
-    private lateinit var navHomeLabel: TextView
-    private lateinit var navMusicLabel: TextView
-    private lateinit var navNotificationsLabel: TextView
-    private lateinit var navSettingsLabel: TextView
+    // Nav buttons
+    private lateinit var navHome: ImageButton
+    private lateinit var navMusic: ImageButton
+    private lateinit var navNotifications: ImageButton
+    private lateinit var navSettings: ImageButton
 
     private val navItemDrawables = mapOf(
-        R.id.nav_home to Pair(R.drawable.ic_sidebar_home, R.drawable.ic_sidebar_home_selected),
-        R.id.nav_music to Pair(R.drawable.ic_sidebar_music, R.drawable.ic_sidebar_music_selected),
-        R.id.nav_notifications to Pair(R.drawable.ic_sidebar_bell, R.drawable.ic_sidebar_bell_selected),
-        R.id.nav_settings to Pair(R.drawable.ic_sidebar_settings, R.drawable.ic_sidebar_settings_selected)
+        R.id.nav_home to Pair(R.drawable.ic_nav_home_normal, R.drawable.ic_nav_home),
+        R.id.nav_music to Pair(R.drawable.ic_nav_music, R.drawable.ic_nav_music),
+        R.id.nav_notifications to Pair(R.drawable.ic_nav_bell, R.drawable.ic_nav_bell),
+        R.id.nav_settings to Pair(R.drawable.ic_nav_settings, R.drawable.ic_nav_settings)
     )
 
     private var selectedNavId: Int = R.id.nav_home
@@ -87,23 +71,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        // Initialize nav items
+        // Initialize nav buttons
         navHome = binding.navHome
         navMusic = binding.navMusic
         navNotifications = binding.navNotifications
         navSettings = binding.navSettings
-
-        // Initialize icons
-        navHomeIcon = binding.navHomeIcon
-        navMusicIcon = binding.navMusicIcon
-        navNotificationsIcon = binding.navNotificationsIcon
-        navSettingsIcon = binding.navSettingsIcon
-
-        // Initialize labels
-        navHomeLabel = binding.navHomeLabel
-        navMusicLabel = binding.navMusicLabel
-        navNotificationsLabel = binding.navNotificationsLabel
-        navSettingsLabel = binding.navSettingsLabel
 
         // Set click listeners
         navHome.setOnClickListener {
@@ -175,11 +147,11 @@ class MainActivity : AppCompatActivity() {
             else -> R.id.nav_home
         }
 
-        // Reset all nav items
-        resetNavItem(navHome, navHomeIcon, navHomeLabel, R.id.nav_home)
-        resetNavItem(navMusic, navMusicIcon, navMusicLabel, R.id.nav_music)
-        resetNavItem(navNotifications, navNotificationsIcon, navNotificationsLabel, R.id.nav_notifications)
-        resetNavItem(navSettings, navSettingsIcon, navSettingsLabel, R.id.nav_settings)
+        // Reset all nav items to normal state
+        resetNavItem(navHome, R.id.nav_home)
+        resetNavItem(navMusic, R.id.nav_music)
+        resetNavItem(navNotifications, R.id.nav_notifications)
+        resetNavItem(navSettings, R.id.nav_settings)
 
         // Set selected nav item
         val selectedItem = when (navItemId) {
@@ -192,31 +164,20 @@ class MainActivity : AppCompatActivity() {
 
         val navId = selectedNavId
 
-        selectedItem.background = ContextCompat.getDrawable(this, R.drawable.bg_sidebar_item_selected)
+        // Set selected background (blue with rounded corners)
+        selectedItem.background = ContextCompat.getDrawable(this, R.drawable.bg_nav_item_selected)
 
-        val (icon, label) = when (navId) {
-            R.id.nav_home -> Pair(navHomeIcon, navHomeLabel)
-            R.id.nav_music -> Pair(navMusicIcon, navMusicLabel)
-            R.id.nav_notifications -> Pair(navNotificationsIcon, navNotificationsLabel)
-            R.id.nav_settings -> Pair(navSettingsIcon, navSettingsLabel)
-            else -> Pair(navHomeIcon, navHomeLabel)
-        }
-
-        val selectedDrawable = navItemDrawables[navId]?.second ?: R.drawable.ic_sidebar_home_selected
-        icon.setImageResource(selectedDrawable)
-        label.setTextColor(ContextCompat.getColor(this, R.color.blue_600))
+        // Set selected icon (white for home)
+        val selectedDrawable = navItemDrawables[navId]?.second ?: R.drawable.ic_nav_home
+        selectedItem.setImageResource(selectedDrawable)
     }
 
-    private fun resetNavItem(
-        layout: LinearLayout,
-        icon: ImageView,
-        label: TextView,
-        navId: Int
-    ) {
-        layout.background = null
-        val defaultDrawable = navItemDrawables[navId]?.first ?: R.drawable.ic_sidebar_home
-        icon.setImageResource(defaultDrawable)
-        label.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
+    private fun resetNavItem(button: ImageButton, navId: Int) {
+        // Set normal background (transparent with hover effect)
+        button.background = ContextCompat.getDrawable(this, R.drawable.bg_nav_item_normal)
+        // Set normal icon (gray)
+        val defaultDrawable = navItemDrawables[navId]?.first ?: R.drawable.ic_nav_home_normal
+        button.setImageResource(defaultDrawable)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

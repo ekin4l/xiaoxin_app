@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Gear/cog outline -->
+    <path
+        android:strokeColor="@color/zinc_400"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M12.22,2h-0.44a2,2 0,0,0 -2,2v0.18a2,2 0,0,1 -1,1.73l-0.43,0.25a2,2 0,0,1 -2,0l-0.15,-0.08a2,2 0,0,0 -2.73,0.73l-0.22,0.38a2,2 0,0,0 0.73,2.73l0.15,0.1a2,2 0,0,1 1,1.72v0.51a2,2 0,0,1 -1,1.74l-0.15,0.09a2,2 0,0,0 -0.73,2.73l0.22,0.38a2,2 0,0,0 2.73,0.73l0.15,-0.08a2,2 0,0,1 2,0l0.43,0.25a2,2 0,0,1 1,1.73V20a2,2 0,0,0 2,2h0.44a2,2 0,0,0 2,-2v-0.18a2,2 0,0,1 1,-1.73l0.43,-0.25a2,2 0,0,1 2,0l0.15,0.08a2,2 0,0,0 2.73,-0.73l0.22,-0.38a2,2 0,0,0 -0.73,-2.73l-0.15,-0.1a2,2 0,0,1 -1,-1.72v-0.51a2,2 0,0,1 1,-1.74l0.15,-0.09a2,2 0,0,0 0.73,-2.73l-0.22,-0.38a2,2 0,0,0 -2.73,-0.73l-0.15,0.08a2,2 0,0,1 -2,0l-0.43,-0.25a2,2 0,0,1 -1,-1.73V4a2,2 0,0,0 -2,-2z" />
+    <!-- Center circle hole -->
+    <path
+        android:strokeColor="@color/zinc_400"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M12,12m-3,0a3,3 0,1,0 6,0a3,3 0,1,0 -6,0" />
+</vector>

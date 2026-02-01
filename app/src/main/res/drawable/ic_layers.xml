@@ -4,7 +4,25 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Layers icon - three diamond shapes (stroke style) -->
+    <!-- Bottom layer -->
     <path
-        android:fillColor="@color/text_secondary"
-        android:pathData="M11.99,18.54l-7.37,-5.73L3,14.07l9,7 9,-7 -1.63,-1.27 -7.38,5.74zM12,16l7.36,-5.73L21,9l-9,-7 -9,7 1.63,1.27L12,16z"/>
+        android:strokeColor="#525252"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M2,17l10,5 10,-5" />
+    <!-- Middle layer -->
+    <path
+        android:strokeColor="#525252"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M2,12l10,5 10,-5" />
+    <!-- Top layer - filled diamond -->
+    <path
+        android:fillColor="#525252"
+        android:pathData="M12,2L2,7l10,5 10,-5 -10,-5z" />
 </vector>

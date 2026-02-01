@@ -124,8 +124,7 @@
                     android:layout_height="48dp"
                     android:src="@drawable/ic_zoom_plus"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/map_zoom_in"
-                    app:tint="@color/zinc_600" />
+                    android:contentDescription="@string/map_zoom_in" />
 
                 <!-- Zoom Out -->
                 <ImageButton
@@ -134,8 +133,7 @@
                     android:layout_height="48dp"
                     android:src="@drawable/ic_zoom_minus"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/map_zoom_out"
-                    app:tint="@color/zinc_600" />
+                    android:contentDescription="@string/map_zoom_out" />
 
             </LinearLayout>
 
@@ -156,8 +154,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_layers"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/map_layers"
-                app:tint="@color/zinc_600" />
+                android:contentDescription="@string/map_layers" />
 
         </androidx.cardview.widget.CardView>
 
@@ -174,8 +171,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_navigation"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/map_locate"
-                app:tint="@color/blue_600" />
+                android:contentDescription="@string/map_locate" />
 
         </FrameLayout>
 

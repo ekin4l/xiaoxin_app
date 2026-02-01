@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_sm"
+    app:cardCornerRadius="@dimen/card_corner_radius_small"
+    app:cardElevation="@dimen/elevation_sm">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/poi_card_padding">
+
+        <!-- POI Type Icon -->
+        <ImageView
+            android:id="@+id/iv_poi_type"
+            android:layout_width="@dimen/poi_card_image_size"
+            android:layout_height="@dimen/poi_card_image_size"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:contentDescription="类型"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- POI Name -->
+        <TextView
+            android:id="@+id/tv_poi_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="故宫博物院"
+            app:layout_constraintStart_toEndOf="@id/iv_poi_type"
+            app:layout_constraintEnd_toStartOf="@id/tv_poi_rating"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- POI Address -->
+        <TextView
+            android:id="@+id/tv_poi_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="北京市东城区景山前街4号"
+            app:layout_constraintStart_toEndOf="@id/iv_poi_type"
+            app:layout_constraintEnd_toStartOf="@id/btn_route"
+            app:layout_constraintTop_toBottomOf="@id/tv_poi_name" />
+
+        <!-- Distance -->
+        <TextView
+            android:id="@+id/tv_poi_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="4dp"
+            android:textSize="12sp"
+            android:textColor="@color/text_tertiary"
+            tools:text="3.5km"
+            app:layout_constraintStart_toEndOf="@id/iv_poi_type"
+            app:layout_constraintTop_toBottomOf="@id/tv_poi_address" />
+
+        <!-- Duration -->
+        <TextView
+            android:id="@+id/tv_poi_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:layout_marginTop="4dp"
+            android:textSize="12sp"
+            android:textColor="@color/blue_600"
+            tools:text="步行约18分钟"
+            app:layout_constraintStart_toEndOf="@id/tv_poi_distance"
+            app:layout_constraintTop_toBottomOf="@id/tv_poi_address" />
+
+        <!-- Rating -->
+        <TextView
+            android:id="@+id/tv_poi_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/warning"
+            android:textStyle="bold"
+            android:drawableStart="@android:drawable/star_on"
+            android:drawablePadding="4dp"
+            tools:text="4.8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Route Button -->
+        <Button
+            android:id="@+id/btn_route"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="导航"
+            android:textSize="12sp"
+            android:minWidth="60dp"
+            style="@style/XiaoXinButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

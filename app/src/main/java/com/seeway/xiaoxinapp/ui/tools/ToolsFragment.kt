@@ -23,8 +23,7 @@ class ToolsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.tvTools.text = "实用工具箱"
+        // TODO: Initialize tools functionality
     }
 
     override fun onDestroyView() {

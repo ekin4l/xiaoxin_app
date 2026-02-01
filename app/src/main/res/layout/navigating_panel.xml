@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Navigation Mode Panel -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="@dimen/card_corner_radius_large"
+    app:cardElevation="@dimen/elevation_lg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/nav_panel_padding">
+
+        <!-- Current Instruction -->
+        <TextView
+            android:id="@+id/nav_current_instruction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="沿当前道路向东行驶500米"
+            android:textSize="20sp"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/spacing_sm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/nav_distance"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Distance to Destination -->
+        <TextView
+            android:id="@+id/nav_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15.0km"
+            android:textSize="24sp"
+            android:textColor="@color/blue_600"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- ETA -->
+        <TextView
+            android:id="@+id/nav_eta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预计20分钟后到达"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nav_current_instruction" />
+
+        <!-- Destination Name -->
+        <TextView
+            android:id="@+id/nav_destination"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="前往: 故宫博物院"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:drawableStart="@android:drawable/ic_menu_directions"
+            android:drawablePadding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nav_eta" />
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:id="@+id/nav_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/spacing_md"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nav_destination">
+
+            <Button
+                android:id="@+id/btn_exit_nav"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="退出导航"
+                style="@style/XiaoXinButtonOutlined" />
+
+            <Button
+                android:id="@+id/btn_nav_details"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_md"
+                android:text="查看详情"
+                style="@style/XiaoXinButton" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

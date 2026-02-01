@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Virtual Keyboard for Voice Input -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/card_corner_radius_large"
+    app:cardElevation="@dimen/elevation_lg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_md"
+        android:background="@color/blue_50">
+
+        <!-- Voice Status -->
+        <TextView
+            android:id="@+id/voice_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="正在听..."
+            android:textSize="16sp"
+            android:textColor="@color/blue_600"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/spacing_md" />
+
+        <!-- Voice Waveform Animation Placeholder -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/spacing_md">
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="20dp"
+                android:background="@color/blue_600"
+                android:layout_marginEnd="4dp" />
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="30dp"
+                android:background="@color/blue_600"
+                android:layout_marginEnd="4dp" />
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="40dp"
+                android:background="@color/blue_600"
+                android:layout_marginEnd="4dp" />
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="30dp"
+                android:background="@color/blue_600"
+                android:layout_marginEnd="4dp" />
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="20dp"
+                android:background="@color/blue_600" />
+
+        </LinearLayout>
+
+        <!-- Recognized Text -->
+        <TextView
+            android:id="@+id/voice_recognized_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:layout_marginBottom="@dimen/spacing_md" />
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_cancel_voice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:text="取消"
+                style="@style/XiaoXinButtonOutlined" />
+
+            <Button
+                android:id="@+id/btn_confirm_voice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:text="确认"
+                style="@style/XiaoXinButton" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

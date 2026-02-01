@@ -39,6 +39,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    applicationVariants.all {
+        outputs.all {
+            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName = "xiaoxin-navi.apk"
+        }
+    }
 }
 
 dependencies {
@@ -48,6 +54,12 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    // CardView
+    implementation("androidx.cardview:cardview:1.0.0")
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 

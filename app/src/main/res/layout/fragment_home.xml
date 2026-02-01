@@ -6,19 +6,253 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <!-- Amap -->
     <com.amap.api.maps.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_locate"
+    <!-- Top Search Bar Container -->
+    <LinearLayout
+        android:id="@+id/search_bar_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/search_horizontal_margin"
+        android:layout_marginTop="@dimen/search_top_margin"
+        android:layout_marginEnd="@dimen/search_horizontal_margin"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Search Input Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/search_corner_radius"
+            app:cardElevation="@dimen/elevation_md">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/spacing_md"
+                android:paddingEnd="@dimen/spacing_md">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_search"
+                    android:contentDescription="@string/search_hint" />
+
+                <EditText
+                    android:id="@+id/search_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/search_hint"
+                    android:minHeight="@dimen/search_min_height"
+                    android:paddingStart="@dimen/spacing_md"
+                    android:paddingEnd="@dimen/spacing_md"
+                    android:textSize="16sp"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Search Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:text="搜索"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:cornerRadius="20dp"
+            app:backgroundTint="@color/blue_600"
+            app:elevation="6dp"
+            android:contentDescription="搜索" />
+
+    </LinearLayout>
+
+    <!-- Voice Assistant Button - Bottom Center -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/voice_assistant_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:contentDescription="定位到我的位置"
-        android:src="@android:drawable/ic_menu_mylocation"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <!-- Mic Icon with Pulse Effect Background -->
+            <FrameLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_ai_bubble" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_mic"
+                    app:tint="@color/white"
+                    android:contentDescription="语音输入" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="你好小新"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Map Controls Container -->
+    <LinearLayout
+        android:id="@+id/map_controls_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:background="@drawable/bg_map_control"
+        android:padding="@dimen/map_control_spacing"
+        android:elevation="@dimen/elevation_sm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Zoom In -->
+        <ImageButton
+            android:id="@+id/btn_zoom_in"
+            android:layout_width="@dimen/map_control_size"
+            android:layout_height="@dimen/map_control_size"
+            android:src="@drawable/ic_zoom_in"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/map_zoom_in" />
+
+        <!-- Zoom Out -->
+        <ImageButton
+            android:id="@+id/btn_zoom_out"
+            android:layout_width="@dimen/map_control_size"
+            android:layout_height="@dimen/map_control_size"
+            android:src="@drawable/ic_zoom_out"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/map_zoom_out" />
+
+        <!-- Layers -->
+        <ImageButton
+            android:id="@+id/btn_layers"
+            android:layout_width="@dimen/map_control_size"
+            android:layout_height="@dimen/map_control_size"
+            android:src="@drawable/ic_layers"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/map_layers" />
+
+        <!-- Locate -->
+        <ImageButton
+            android:id="@+id/btn_locate"
+            android:layout_width="@dimen/map_control_size"
+            android:layout_height="@dimen/map_control_size"
+            android:src="@android:drawable/ic_menu_mylocation"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/map_locate" />
+
+    </LinearLayout>
+
+    <!-- POI Results Panel (Initially Hidden) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/poi_results_panel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:layout_marginBottom="@dimen/spacing_md"
+        android:visibility="gone"
+        app:cardCornerRadius="@dimen/card_corner_radius_large"
+        app:cardElevation="@dimen/elevation_lg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_bar_container"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintHeight_min="200dp"
+        app:layout_constraintHeight_max="400dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/spacing_md">
+
+                <TextView
+                    android:id="@+id/poi_results_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="搜索结果"
+                    android:textSize="18sp"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btn_close_results"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="关闭" />
+
+            </LinearLayout>
+
+            <!-- Results List -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/poi_results_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/spacing_sm" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

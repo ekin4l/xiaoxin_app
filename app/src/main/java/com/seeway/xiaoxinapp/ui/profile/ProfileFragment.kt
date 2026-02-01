@@ -23,8 +23,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.tvProfile.text = "个人中心"
+        // TODO: Initialize profile functionality
     }
 
     override fun onDestroyView() {

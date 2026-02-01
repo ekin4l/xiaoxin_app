@@ -23,8 +23,7 @@ class ExploreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.tvExplore.text = "探索精彩内容"
+        // TODO: Initialize explore functionality
     }
 
     override fun onDestroyView() {

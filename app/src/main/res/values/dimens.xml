@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="spacing_2xl">48dp</dimen>
+
+    <!-- Corner Radius -->
+    <dimen name="corner_radius_sm">8dp</dimen>
+    <dimen name="corner_radius_md">16dp</dimen>
+    <dimen name="corner_radius_lg">24dp</dimen>
+    <dimen name="corner_radius_xl">32dp</dimen>
+
+    <!-- Card Specific -->
+    <dimen name="card_corner_radius_small">12dp</dimen>
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="card_corner_radius_large">32dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_padding_large">24dp</dimen>
+
+    <!-- Button Specific -->
+    <dimen name="button_corner_radius">16dp</dimen>
+    <dimen name="button_min_height">48dp</dimen>
+    <dimen name="button_padding_horizontal">24dp</dimen>
+
+    <!-- Input Specific -->
+    <dimen name="input_corner_radius">16dp</dimen>
+
+    <!-- Search Specific -->
+    <dimen name="search_corner_radius">24dp</dimen>
+    <dimen name="search_min_height">56dp</dimen>
+    <dimen name="search_horizontal_margin">16dp</dimen>
+    <dimen name="search_top_margin">16dp</dimen>
+
+    <!-- Bottom Sheet -->
+    <dimen name="bottom_sheet_corner_radius">24dp</dimen>
+
+    <!-- Sidebar -->
+    <dimen name="sidebar_width">80dp</dimen>
+    <dimen name="sidebar_item_padding">12dp</dimen>
+    <dimen name="sidebar_icon_size">32dp</dimen>
+
+    <!-- FAB -->
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Map Controls -->
+    <dimen name="map_control_size">48dp</dimen>
+    <dimen name="map_control_spacing">8dp</dimen>
+
+    <!-- POI Card -->
+    <dimen name="poi_card_height">80dp</dimen>
+    <dimen name="poi_card_image_size">60dp</dimen>
+    <dimen name="poi_card_padding">16dp</dimen>
+
+    <!-- Route Card -->
+    <dimen name="route_card_min_height">100dp</dimen>
+    <dimen name="route_card_padding">16dp</dimen>
+
+    <!-- Navigating Panel -->
+    <dimen name="nav_panel_height">180dp</dimen>
+    <dimen name="nav_panel_padding">20dp</dimen>
+
+    <!-- AI Bubble -->
+    <dimen name="ai_bubble_size">72dp</dimen>
+    <dimen name="ai_bubble_padding">16dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_display_large">57sp</dimen>
+    <dimen name="text_size_headline_large">32sp</dimen>
+    <dimen name="text_size_title_large">22sp</dimen>
+    <dimen name="text_size_title_medium">18sp</dimen>
+    <dimen name="text_size_body_large">16sp</dimen>
+    <dimen name="text_size_body_medium">14sp</dimen>
+    <dimen name="text_size_label_large">14sp</dimen>
+    <dimen name="text_size_label_medium">12sp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_sm">2dp</dimen>
+    <dimen name="elevation_md">4dp</dimen>
+    <dimen name="elevation_lg">8dp</dimen>
+    <dimen name="elevation_xl">12dp</dimen>
+
+    <!-- Responsive Breakpoints -->
+    <dimen name="content_max_width">600dp</dimen>
+    <dimen name="content_padding_horizontal">16dp</dimen>
+
+    <!-- Animation -->
+    <dimen name="animation_duration_fast">150</dimen>
+    <dimen name="animation_duration_normal">300</dimen>
+    <dimen name="animation_duration_slow">500</dimen>
+</resources>

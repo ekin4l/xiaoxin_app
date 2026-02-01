@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- API 27+ theme extensions -->
+    <style name="Theme.XiaoXinNav" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Navigation Bar light mode (API 27+) -->
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <!-- Full Screen - extend under status and navigation bars (API 27+) -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+
+</resources>

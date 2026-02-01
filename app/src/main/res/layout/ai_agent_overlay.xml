@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AI Assistant Overlay Layout -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="@dimen/card_corner_radius_large"
+    app:cardElevation="@dimen/elevation_lg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_md">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/spacing_md">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="你好小新"
+                android:textSize="18sp"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btn_close_ai"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="关闭" />
+
+        </LinearLayout>
+
+        <!-- Chat Messages -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ai_chat_messages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="300dp"
+            android:layout_marginBottom="@dimen/spacing_md" />
+
+        <!-- Input Area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_search_bar"
+            android:padding="@dimen/spacing_sm">
+
+            <EditText
+                android:id="@+id/ai_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="说点什么..."
+                android:minHeight="48dp"
+                android:paddingStart="@dimen/spacing_md"
+                android:paddingEnd="@dimen/spacing_md"
+                android:textSize="16sp"
+                android:inputType="text" />
+
+            <ImageButton
+                android:id="@+id/btn_ai_voice"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_mic"
+                android:background="@drawable/bg_ai_bubble"
+                android:contentDescription="语音输入" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

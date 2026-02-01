@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">小新导航</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">首页</string>
+    <string name="nav_music">音乐</string>
+    <string name="nav_notifications">通知</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_explore">探索</string>
+    <string name="nav_tools">工具</string>
+    <string name="nav_profile">我的</string>
+
+    <!-- Search -->
+    <string name="search_hint">搜索地点、路线</string>
+    <string name="search_voice_hint">说出你想去的地方</string>
+
+    <!-- AI Assistant -->
+    <string name="ai_assistant">你好小新</string>
+    <string name="ai_listening">正在听...</string>
+    <string name="ai_thinking">正在思考...</string>
+
+    <!-- Map Controls -->
+    <string name="map_zoom_in">放大</string>
+    <string name="map_zoom_out">缩小</string>
+    <string name="map_layers">图层</string>
+    <string name="map_locate">定位</string>
+
+    <!-- POI -->
+    <string name="poi_distance">%s km</string>
+    <string name="poi_duration">约%s分钟</string>
+
+    <!-- Route -->
+    <string name="route_recommend">推荐</string>
+    <string name="route_fastest">最快</string>
+    <string name="route_shortest">最短</string>
+    <string name="route_no_highway">少高速</string>
+
+    <!-- Navigation -->
+    <string name="nav_start">开始导航</string>
+    <string name="nav_end">结束导航</string>
+    <string name="nav_remaining">剩余 %s</string>
 </resources>

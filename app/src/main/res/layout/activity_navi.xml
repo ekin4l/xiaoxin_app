@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- 导航视图 -->
+    <com.amap.api.navi.AMapNaviView
+        android:id="@+id/naviView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 顶部导航信息栏 -->
+    <LinearLayout
+        android:id="@+id/naviLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/dark_blue"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvNaviTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正在导航"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNaviInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="正在计算路线..."
+            android:textColor="@color/white_gray"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- 退出导航按钮 -->
+    <Button
+        android:id="@+id/btnExitNavi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/bg_nav_item_selected"
+        android:minWidth="120dp"
+        android:text="退出导航"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</RelativeLayout>

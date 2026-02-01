@@ -52,6 +52,10 @@
     <!-- AI Assistant -->
     <color name="ai_muted_bg">#ECECF0</color>
 
+    <!-- Navigation Colors -->
+    <color name="dark_blue">#1E3A8A</color>
+    <color name="white_gray">#F4F4F5</color>
+
     <!-- Legacy Colors (for compatibility) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

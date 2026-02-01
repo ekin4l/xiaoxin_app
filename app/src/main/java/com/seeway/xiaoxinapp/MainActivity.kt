@@ -1,8 +1,11 @@
 package com.seeway.xiaoxinapp
 
+import android.Manifest
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -10,11 +13,21 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import com.amap.api.location.AMapLocationClient
+import com.amap.api.location.AMapLocationClientOption
 import com.seeway.xiaoxinapp.databinding.ActivityMainBinding
+import com.amap.api.maps.MapsInitializer
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    // Location permissions
+    private val LOCATION_PERMISSIONS = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+    private val REQUEST_LOCATION_PERMISSION = 1001
 
     // Nav buttons
     private lateinit var navHome: ImageButton
@@ -34,6 +47,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Set up AMap privacy agreement (required for AMap SDK)
+        setupAMapPrivacy()
+
         // Enable edge-to-edge before setContentView
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -46,7 +62,48 @@ class MainActivity : AppCompatActivity() {
         // Handle insets for edge-to-edge
         setupEdgeToEdge()
 
+        // Request location permissions
+        requestLocationPermissions()
+
         setupNavigation()
+    }
+
+    private fun setupAMapPrivacy() {
+        // Set AMap privacy agreement (required for SDK to work)
+        AMapLocationClient.updatePrivacyShow(this, true, true)
+        AMapLocationClient.updatePrivacyAgree(this, true)
+
+        // Initialize AMap with context
+        MapsInitializer.initialize(this)
+    }
+
+    private fun requestLocationPermissions() {
+        val missingPermissions = LOCATION_PERMISSIONS.filter {
+            ContextCompat.checkSelfPermission(this, it) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
+
+        if (missingPermissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, missingPermissions.toTypedArray(), REQUEST_LOCATION_PERMISSION)
+        } else {
+            // Permissions already granted
+            Toast.makeText(this, "定位权限已授予", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            val allGranted = grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
+            if (allGranted) {
+                Toast.makeText(this, "定位权限已授予", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "定位权限被拒绝，无法使用定位功能", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun setupEdgeToEdge() {

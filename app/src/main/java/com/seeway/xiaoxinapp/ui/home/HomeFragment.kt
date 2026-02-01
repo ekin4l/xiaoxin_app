@@ -26,16 +26,20 @@ import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.Marker
 import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.maps.model.MyLocationStyle
+import com.amap.api.location.AMapLocation
+import com.amap.api.location.AMapLocationClient
+import com.amap.api.location.AMapLocationClientOption
+import com.amap.api.location.AMapLocationListener
 import com.amap.api.services.core.LatLonPoint
 import com.amap.api.services.core.PoiItem
 import com.amap.api.services.poisearch.PoiResult
 import com.amap.api.services.poisearch.PoiSearch
 import android.widget.Toast
+import android.content.Intent
 import com.seeway.xiaoxinapp.R
 import com.seeway.xiaoxinapp.adapter.POIAdapter
 import com.seeway.xiaoxinapp.databinding.FragmentHomeBinding
 import com.seeway.xiaoxinapp.model.POI
-import com.seeway.xiaoxinapp.model.Route
 import com.google.android.material.button.MaterialButton
 
 class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
@@ -51,6 +55,14 @@ class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
 
     // Markers on map
     private val poiMarkers = mutableListOf<Marker>()
+
+    // Location client
+    private var locationClient: AMapLocationClient? = null
+    private val locationListener = AMapLocationListener { location ->
+        onLocationChanged(location)
+    }
+    private var firstLocationReceived = false
+    private var latestLocation: AMapLocation? = null
 
     // UI State
     private var isSearchMode = false
@@ -91,10 +103,12 @@ class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
             // Set map type
             aMap?.mapType = AMap.MAP_TYPE_NORMAL
 
-            // Configure location style
+            // Configure location style - blue arrow with direction (no auto-follow)
             val myLocationStyle = MyLocationStyle()
             myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_SHOW)
             myLocationStyle.interval(2000)
+            myLocationStyle.strokeColor(android.graphics.Color.BLUE)
+            myLocationStyle.radiusFillColor(android.graphics.Color.argb(50, 0, 0, 255))
             aMap?.myLocationStyle = myLocationStyle
 
             aMap?.isMyLocationEnabled = true
@@ -117,8 +131,74 @@ class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
                 hideSearchResults()
             }
 
+            // Start location
+            startLocation()
+
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun startLocation() {
+        try {
+            // Initialize location client
+            locationClient = AMapLocationClient(requireContext())
+
+            // Configure location option
+            val locationOption = AMapLocationClientOption()
+            locationOption.locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
+            locationOption.isOnceLocation = false
+            locationOption.isNeedAddress = true
+            locationOption.interval = 2000
+
+            locationClient?.setLocationOption(locationOption)
+            locationClient?.setLocationListener(locationListener)
+            locationClient?.startLocation()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun onLocationChanged(location: AMapLocation?) {
+        // Save latest location
+        if (location != null && location.errorCode == 0) {
+            latestLocation = location
+        }
+
+        if (location != null) {
+            if (location.errorCode == 0) {
+                // Successfully got location
+                val latLng = LatLng(location.latitude, location.longitude)
+
+                // Move camera to current location on first successful location
+                if (!firstLocationReceived) {
+                    // Get current zoom level and increase by 1
+                    val currentZoom = aMap?.cameraPosition?.zoom ?: 16f
+                    val newZoom = currentZoom + 1f
+
+                    aMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, newZoom))
+                    firstLocationReceived = true
+
+                    Toast.makeText(
+                        requireContext(),
+                        "首次定位成功！移动到当前位置",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            } else {
+                // Location error
+                val errorInfo = when (location.errorCode) {
+                    1 -> "定位失败，请检查定位权限"
+                    2 -> "定位失败，请检查网络连接"
+                    3 -> "定位失败，请检查设备设置"
+                    else -> "定位失败，错误码: ${location.errorCode}, 错误信息: ${location.errorInfo}"
+                }
+                Toast.makeText(
+                    requireContext(),
+                    errorInfo,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -159,10 +239,22 @@ class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
 
         // Locate to current position
         binding.btnLocate.setOnClickListener {
-            aMap?.myLocation?.let { location ->
-                val myLatLng = LatLng(location.latitude, location.longitude)
-                aMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 16f))
-            }
+            latestLocation?.let { location ->
+                if (location.errorCode == 0) {
+                    val myLatLng = LatLng(location.latitude, location.longitude)
+                    aMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 16f))
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "尚未获取到定位信息",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } ?: Toast.makeText(
+                requireContext(),
+                "尚未获取到定位信息",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -445,19 +537,34 @@ class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
         // Hide search results
         hideSearchResults()
 
-        // TODO: Show route planning bottom sheet
-        // For now, just show a toast or log
-        showRouteSelection(poi)
+        // Start navigation activity
+        startNaviActivity(poi)
     }
 
-    private fun showRouteSelection(poi: POI) {
-        // TODO: Implement route selection bottom sheet
-        // For now, just move camera to show the route
-        val mockRoutes = Route.createMockRoutes()
-        if (mockRoutes.isNotEmpty()) {
-            binding.poiResultsTitle.text = "到 ${poi.name} 的路线"
-            binding.poiResultsPanel.visibility = View.VISIBLE
-        }
+    private fun startNaviActivity(poi: POI) {
+        // Get current location
+        latestLocation?.let { startLoc ->
+            if (startLoc.errorCode == 0) {
+                val intent = Intent(requireContext(), com.seeway.xiaoxinapp.NaviActivity::class.java)
+                intent.putExtra(com.seeway.xiaoxinapp.NaviActivity.EXTRA_START_LAT, startLoc.latitude)
+                intent.putExtra(com.seeway.xiaoxinapp.NaviActivity.EXTRA_START_LON, startLoc.longitude)
+                intent.putExtra(com.seeway.xiaoxinapp.NaviActivity.EXTRA_END_LAT, poi.latitude)
+                intent.putExtra(com.seeway.xiaoxinapp.NaviActivity.EXTRA_END_LON, poi.longitude)
+                intent.putExtra(com.seeway.xiaoxinapp.NaviActivity.EXTRA_END_NAME, poi.name)
+
+                startActivity(intent)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "尚未获取到当前位置，无法开始导航",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } ?: Toast.makeText(
+            requireContext(),
+            "尚未获取到当前位置，无法开始导航",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun hideSearchResults() {
@@ -531,6 +638,11 @@ class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
     override fun onDestroyView() {
         super.onDestroyView()
         try {
+            // Stop location
+            locationClient?.stopLocation()
+            locationClient?.onDestroy()
+            locationClient = null
+
             binding.mapView.onDestroy()
         } catch (e: Exception) {
             e.printStackTrace()

@@ -82,7 +82,7 @@ class HomeFragment : Fragment() {
             // Configure UI settings
             aMap?.uiSettings?.isMyLocationButtonEnabled = false
             aMap?.uiSettings?.isZoomControlsEnabled = false
-            aMap?.uiSettings?.isCompassEnabled = true
+            aMap?.uiSettings?.isCompassEnabled = false
 
             // Disable indoor map
             aMap?.showIndoorMap(false)

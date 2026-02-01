@@ -183,6 +183,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:focusable="true"
         app:cardCornerRadius="24dp"
         app:cardElevation="16dp"
         app:cardBackgroundColor="@color/white"
@@ -195,6 +197,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:clickable="false"
             android:paddingStart="16dp"
             android:paddingEnd="20dp"
             android:paddingTop="10dp"
@@ -328,5 +331,16 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <!-- AI Agent Overlay (Initially Hidden) - Placed last for proper z-order -->
+    <include
+        android:id="@+id/ai_agent_overlay"
+        layout="@layout/ai_agent_overlay"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

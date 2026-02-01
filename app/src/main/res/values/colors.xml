@@ -49,6 +49,9 @@
     <!-- Divider -->
     <color name="divider">#E4E4E7</color>
 
+    <!-- AI Assistant -->
+    <color name="ai_muted_bg">#ECECF0</color>
+
     <!-- Legacy Colors (for compatibility) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

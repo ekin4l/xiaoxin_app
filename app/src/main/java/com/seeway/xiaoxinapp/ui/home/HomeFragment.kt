@@ -1,11 +1,15 @@
 package com.seeway.xiaoxinapp.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -39,6 +43,10 @@ class HomeFragment : Fragment() {
     // UI State
     private var isSearchMode = false
     private var isNavigating = false
+    private var isAIOverlayVisible = false
+
+    // AI Handler
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -147,10 +155,143 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupAIAssistant() {
-        binding.voiceAssistantBtn.setOnClickListener {
-            // TODO: Show AI assistant overlay
-            startVoiceSearch()
+        // Find the button directly from the root view
+        val voiceBtn = binding.root.findViewById<CardView>(R.id.voice_assistant_btn)
+        val aiOverlay = binding.root.findViewById<View>(R.id.ai_agent_overlay)
+
+        voiceBtn?.setOnClickListener {
+            // Toggle overlay visibility
+            if (aiOverlay != null) {
+                if (aiOverlay.visibility == View.VISIBLE) {
+                    aiOverlay.visibility = View.GONE
+                } else {
+                    aiOverlay.visibility = View.VISIBLE
+                    aiOverlay.bringToFront()
+                }
+            }
         }
+
+        // Setup AI overlay views after layout
+        binding.root.post {
+            setupAIOverlayViews()
+        }
+    }
+
+    private fun setupAIOverlayViews() {
+        // Close AI overlay
+        val btnClose = binding.root.findViewById<View>(R.id.btn_close_ai)
+        btnClose?.setOnClickListener {
+            hideAIAgentOverlay()
+        }
+
+        // Suggestion buttons (now TextView)
+        val suggestion1 = binding.root.findViewById<TextView>(R.id.ai_suggestion_1)
+        suggestion1?.setOnClickListener {
+            handleAIInput("帮我找找附近停车方便的咖啡馆")
+        }
+
+        val suggestion2 = binding.root.findViewById<TextView>(R.id.ai_suggestion_2)
+        suggestion2?.setOnClickListener {
+            handleAIInput("推荐一下周边的亲子乐园")
+        }
+
+        val suggestion3 = binding.root.findViewById<TextView>(R.id.ai_suggestion_3)
+        suggestion3?.setOnClickListener {
+            handleAIInput("避开拥堵，去三里屯怎么走？")
+        }
+
+        // Send button
+        val btnSend = binding.root.findViewById<ImageButton>(R.id.btn_ai_send)
+        btnSend?.setOnClickListener {
+            val input = binding.root.findViewById<EditText>(R.id.ai_input)
+            val text = input?.text.toString()
+            if (text.isNotBlank()) {
+                handleAIInput(text)
+            }
+        }
+
+        // Input enter key
+        val aiInput = binding.root.findViewById<EditText>(R.id.ai_input)
+        aiInput?.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                val text = aiInput.text.toString()
+                if (text.isNotBlank()) {
+                    handleAIInput(text)
+                }
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun showAIAgentOverlay() {
+        isAIOverlayVisible = true
+        val overlay = binding.root.findViewById<View>(R.id.ai_agent_overlay)
+        overlay?.visibility = View.VISIBLE
+        overlay?.alpha = 0f
+        overlay?.animate()?.alpha(1f)?.setDuration(300)?.start()
+
+        // Reset to suggestions view
+        binding.root.findViewById<View>(R.id.ai_suggestions_view)?.visibility = View.VISIBLE
+        binding.root.findViewById<View>(R.id.ai_thinking_view)?.visibility = View.GONE
+        binding.root.findViewById<View>(R.id.ai_result_view)?.visibility = View.GONE
+
+        // Clear input
+        binding.root.findViewById<EditText>(R.id.ai_input)?.text?.clear()
+    }
+
+    private fun hideAIAgentOverlay() {
+        isAIOverlayVisible = false
+        val overlay = binding.root.findViewById<View>(R.id.ai_agent_overlay)
+        overlay?.animate()?.alpha(0f)?.setDuration(200)?.withEndAction {
+            overlay?.visibility = View.GONE
+        }?.start()
+    }
+
+    private fun handleAIInput(input: String) {
+        // Show thinking state
+        binding.root.findViewById<View>(R.id.ai_suggestions_view)?.visibility = View.GONE
+        binding.root.findViewById<View>(R.id.ai_thinking_view)?.visibility = View.VISIBLE
+        binding.root.findViewById<View>(R.id.ai_result_view)?.visibility = View.GONE
+
+        // Update thinking text
+        val thinkingText = binding.root.findViewById<TextView>(R.id.ai_thinking_text)
+        thinkingText?.text = "\"$input\""
+
+        // Clear input
+        binding.root.findViewById<EditText>(R.id.ai_input)?.text?.clear()
+
+        // Simulate AI processing
+        handler.postDelayed({
+            // Show result
+            showAIResult(input)
+        }, 2500)
+    }
+
+    private fun showAIResult(input: String) {
+        binding.root.findViewById<View>(R.id.ai_thinking_view)?.visibility = View.GONE
+        binding.root.findViewById<View>(R.id.ai_result_view)?.visibility = View.VISIBLE
+
+        val resultText = when {
+            input.contains("乐园") || input.contains("公园") || input.contains("亲子") ->
+                "已为您找到周边最受好评的 2 家亲子乐园，生态环境优美，非常适合周末游玩。"
+            input.contains("咖啡馆") || input.contains("咖啡") ->
+                "已为您找到周边停车位最充足的 3 家咖啡馆，这就为您展示详情。"
+            input.contains("三里屯") || input.contains("拥堵") ->
+                "已为您规划避开拥堵的最佳路线，预计节省 15 分钟，这就开始导航。"
+            else ->
+                "已为您找到相关结果，这就为您展示详情。"
+        }
+
+        binding.root.findViewById<TextView>(R.id.ai_result_text)?.text = "\"$resultText\""
+
+        // Auto-hide and show results
+        handler.postDelayed({
+            hideAIAgentOverlay()
+            // Show search results with relevant POIs
+            performSearch(if (input.contains("咖啡")) "咖啡" else if (input.contains("乐园") || input.contains("公园")) "公园" else input)
+        }, 3000)
     }
 
     private fun setupPOIList() {
@@ -192,15 +333,6 @@ class HomeFragment : Fragment() {
 
         // Hide keyboard
         binding.searchInput.clearFocus()
-    }
-
-    private fun startVoiceSearch() {
-        // TODO: Integrate voice recognition
-        // For now, just show a placeholder
-        binding.searchInput.hint = "正在听..."
-        binding.searchInput.postDelayed({
-            binding.searchInput.hint = getString(R.string.search_hint)
-        }, 2000)
     }
 
     private fun onPOIClicked(poi: POI) {

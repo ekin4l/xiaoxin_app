@@ -23,7 +23,14 @@ import com.amap.api.maps.AMap
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.MapView
 import com.amap.api.maps.model.LatLng
+import com.amap.api.maps.model.Marker
+import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.maps.model.MyLocationStyle
+import com.amap.api.services.core.LatLonPoint
+import com.amap.api.services.core.PoiItem
+import com.amap.api.services.poisearch.PoiResult
+import com.amap.api.services.poisearch.PoiSearch
+import android.widget.Toast
 import com.seeway.xiaoxinapp.R
 import com.seeway.xiaoxinapp.adapter.POIAdapter
 import com.seeway.xiaoxinapp.databinding.FragmentHomeBinding
@@ -31,14 +38,19 @@ import com.seeway.xiaoxinapp.model.POI
 import com.seeway.xiaoxinapp.model.Route
 import com.google.android.material.button.MaterialButton
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), PoiSearch.OnPoiSearchListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private var aMap: AMap? = null
+    private var poiSearch: PoiSearch? = null
     private lateinit var poiAdapter: POIAdapter
     private val poiList = mutableListOf<POI>()
+    private var currentSearchQuery = ""
+
+    // Markers on map
+    private val poiMarkers = mutableListOf<Marker>()
 
     // UI State
     private var isSearchMode = false
@@ -296,7 +308,7 @@ class HomeFragment : Fragment() {
 
     private fun setupPOIList() {
         poiAdapter = POIAdapter(
-            onItemClick = { poi ->
+            onItemClick = { poi, position ->
                 onPOIClicked(poi)
             },
             onRouteClick = { poi ->
@@ -318,21 +330,104 @@ class HomeFragment : Fragment() {
     private fun performSearch(query: String) {
         if (query.isBlank()) return
 
-        // Show search results panel
-        binding.poiResultsPanel.visibility = View.VISIBLE
+        // Save search query for later use
+        currentSearchQuery = query
 
-        // TODO: Replace with actual AMap POI search
-        // For now, use mock data
-        val mockPOIs = POI.createMockPOIs()
-        poiList.clear()
-        poiList.addAll(mockPOIs)
-        poiAdapter.submitList(mockPOIs)
+        // Initialize PoiSearch if not already initialized
+        if (poiSearch == null) {
+            poiSearch = PoiSearch(requireContext(), null)
+            poiSearch?.setOnPoiSearchListener(this)
+        }
 
-        // Update title
-        binding.poiResultsTitle.text = "\"$query\" 的搜索结果"
+        // Create search query
+        val queryObj = PoiSearch.Query(query, "", "")
+        queryObj.pageSize = 20
+        queryObj.pageNum = 0
+
+        poiSearch?.query = queryObj
+
+        // Get current location for search center
+        aMap?.myLocation?.let { location ->
+            val latLonPoint = LatLonPoint(location.latitude, location.longitude)
+            queryObj.location = latLonPoint
+        }
+
+        // Start search
+        poiSearch?.searchPOIAsyn()
 
         // Hide keyboard
         binding.searchInput.clearFocus()
+    }
+
+    // PoiSearch.OnPoiSearchListener implementation
+    override fun onPoiSearched(result: PoiResult?, rCode: Int) {
+        if (rCode == 1000) {
+            val pois = result?.pois
+            if (pois != null && pois.isNotEmpty()) {
+                val count = pois.size
+                val firstPoiName = pois[0].title
+
+                // Show toast with result count and first POI name
+                Toast.makeText(
+                    requireContext(),
+                    "找到 $count 个结果，第一条: $firstPoiName",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Show search results panel
+                binding.poiResultsPanel.visibility = View.VISIBLE
+
+                // Hide search bar
+                binding.searchBarContainer.visibility = View.GONE
+
+                // Convert PoiItem to POI
+                val convertedPOIs = pois.map { poiItem ->
+                    POI(
+                        id = poiItem.poiId ?: "",
+                        name = poiItem.title,
+                        address = poiItem.snippet ?: "",
+                        distance = poiItem.distance,
+                        latitude = poiItem.latLonPoint?.latitude ?: 0.0,
+                        longitude = poiItem.latLonPoint?.longitude ?: 0.0
+                    )
+                }
+
+                poiList.clear()
+                poiList.addAll(convertedPOIs)
+                poiAdapter.submitList(convertedPOIs)
+
+                // Select first item
+                if (convertedPOIs.isNotEmpty()) {
+                    poiAdapter.setSelectedPosition(0)
+                }
+
+                // Clear existing markers and add new ones
+                clearPOIMarkers()
+                addPOIMarkers(convertedPOIs)
+
+                // Adjust camera to show all markers
+                adjustCameraToShowAllPOIs(convertedPOIs)
+
+                // Update title
+                binding.poiResultsTitle.text = "\"$currentSearchQuery\" 的搜索结果"
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "未找到相关结果",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "搜索失败，错误码: $rCode",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onPoiItemSearched(item: PoiItem?, rCode: Int) {
+        // Not used for batch search
     }
 
     private fun onPOIClicked(poi: POI) {
@@ -367,6 +462,52 @@ class HomeFragment : Fragment() {
 
     private fun hideSearchResults() {
         binding.poiResultsPanel.visibility = View.GONE
+
+        // Show search bar
+        binding.searchBarContainer.visibility = View.VISIBLE
+
+        // Clear POI markers
+        clearPOIMarkers()
+    }
+
+    private fun clearPOIMarkers() {
+        poiMarkers.forEach { it.remove() }
+        poiMarkers.clear()
+    }
+
+    private fun addPOIMarkers(pois: List<POI>) {
+        pois.forEach { poi ->
+            val latLng = LatLng(poi.latitude, poi.longitude)
+            val marker = aMap?.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title(poi.name)
+                    .snippet(poi.address)
+            )
+            marker?.let { poiMarkers.add(it) }
+        }
+    }
+
+    private fun adjustCameraToShowAllPOIs(pois: List<POI>) {
+        if (pois.isEmpty()) return
+
+        val boundsBuilder = com.amap.api.maps.model.LatLngBounds.Builder()
+        pois.forEach { poi ->
+            boundsBuilder.include(LatLng(poi.latitude, poi.longitude))
+        }
+
+        try {
+            val bounds = boundsBuilder.build()
+            val padding = 200 // padding in pixels
+            aMap?.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(bounds, padding)
+            )
+        } catch (e: Exception) {
+            // If only one POI or bounds calculation fails, just move to first POI
+            val firstPoi = pois[0]
+            val latLng = LatLng(firstPoi.latitude, firstPoi.longitude)
+            aMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f))
+        }
     }
 
     override fun onResume() {

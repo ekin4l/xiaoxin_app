@@ -12,9 +12,22 @@ import com.seeway.xiaoxinapp.model.POI
  * Adapter for POI search results
  */
 class POIAdapter(
-    private val onItemClick: (POI) -> Unit,
+    private val onItemClick: (POI, Int) -> Unit,
     private val onRouteClick: (POI) -> Unit
 ) : ListAdapter<POI, POIAdapter.POIViewHolder>(POIDiffCallback()) {
+
+    private var selectedPosition = RecyclerView.NO_POSITION
+
+    fun setSelectedPosition(position: Int) {
+        val previousPosition = selectedPosition
+        selectedPosition = position
+        if (previousPosition != RecyclerView.NO_POSITION) {
+            notifyItemChanged(previousPosition)
+        }
+        if (position != RecyclerView.NO_POSITION) {
+            notifyItemChanged(position)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): POIViewHolder {
         val binding = ItemPoiResultBinding.inflate(
@@ -26,15 +39,26 @@ class POIAdapter(
     }
 
     override fun onBindViewHolder(holder: POIViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position == selectedPosition, position)
     }
 
     inner class POIViewHolder(
         private val binding: ItemPoiResultBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(poi: POI) {
+        fun bind(poi: POI, isSelected: Boolean, position: Int) {
             binding.apply {
+                // Set selected state
+                if (isSelected) {
+                    root.setCardBackgroundColor(
+                        android.graphics.Color.parseColor("#E3F2FD")
+                    )
+                } else {
+                    root.setCardBackgroundColor(
+                        android.graphics.Color.WHITE
+                    )
+                }
+
                 // Set POI name
                 tvPoiName.text = poi.name
 
@@ -70,7 +94,10 @@ class POIAdapter(
                 }
 
                 // Set click listeners
-                root.setOnClickListener { onItemClick(poi) }
+                root.setOnClickListener {
+                    setSelectedPosition(position)
+                    onItemClick(poi, position)
+                }
                 btnRoute.setOnClickListener { onRouteClick(poi) }
             }
         }
